@@ -18,7 +18,7 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['app', 'deploy']
 
-#images:
-#  - 'asia/asia.gcr.io'  # Lưu trữ Docker image (tuỳ chọn)
+images:
+  - 'asia/asia.gcr.io'  # Lưu trữ Docker image (tuỳ chọn)
 options:
   logging: CLOUD_LOGGING_ONLY
