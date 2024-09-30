@@ -1,44 +1,64 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDocument } from 'src/users/document/user.document';
-import { CollectionReference, Timestamp } from '@google-cloud/firestore';
-import dayjs from 'dayjs';
+import * as bcrypt from 'bcryptjs';
+import { User } from 'src/users/schemas/user.schema';
+import mongoose, { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UsersService {
   private logger: Logger = new Logger(UsersService.name);
 
   constructor(
-    @Inject(UserDocument.collectionName)
-    private userCollection: CollectionReference<UserDocument>,
+    @InjectModel(User.name)
+    private userModel: Model<User>,
   ) {}
 
-  async create({ name, email, createdAt, updatedAt }): Promise<UserDocument> {
-    const docRef = this.userCollection.doc(name);
-    const createAtMillis = dayjs(createdAt).valueOf();
-    const updatedAtMillis = dayjs(updatedAt).valueOf();
-    await docRef.set({
+  hashPassword = (password: string) => {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+    // Store hash in your password DB.
+    return hash;
+  };
+
+  async create({
+    name,
+    email,
+    password,
+    age,
+    createdAt,
+    updatedAt,
+  }): Promise<User> {
+    const hashPassword = this.hashPassword(password);
+    const user = await this.userModel.create({
       name,
       email,
-      createdAt: Timestamp.fromMillis(createAtMillis),
-      updatedAt: Timestamp.fromMillis(updatedAtMillis),
+      password: hashPassword,
+      age,
+      createdAt,
+      updatedAt,
     });
-    const todoDoc = await docRef.get();
-    const todo = todoDoc.data();
-    return todo;
+    return user;
   }
 
-  async findAll(): Promise<UserDocument[]> {
-    const snapshot = await this.userCollection.get();
-    const users: UserDocument[] = [];
-    snapshot.forEach((doc) => {
-      users.push(doc.data());
-    });
-    return users;
+  async findAll(): Promise<User[]> {
+    try {
+      const users = await this.userModel.find().exec();
+      return users;
+    } catch (error) {
+      this.logger.error('Error fetching users', error.stack);
+      throw error;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return 'not found users';
+    }
+    const user = this.userModel.findOne({
+      _id: id,
+    });
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { FirestoreModule } from 'src/firestore/firestore.module';
 import { config } from 'src/config/config';
 import { CompaniesModule } from './companies/companies.module';
 import { UsersModule } from './users/users.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -14,11 +14,10 @@ import { UsersModule } from './users/users.module';
       load: [config],
       envFilePath: ['.env'],
     }),
-    FirestoreModule.forRoot({
+    MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        projectId: configService.get<string>('FIRESTORE_PROJECT_ID'),
-        keyFilename: configService.get<string>('FIRESTORE_KEY_FILENAME'),
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('DATABASE_URL'),
       }),
       inject: [ConfigService],
     }),

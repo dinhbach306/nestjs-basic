@@ -1,17 +1,20 @@
-import { Timestamp } from '@google-cloud/firestore';
+import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateUserDto {
+  @IsNotEmpty()
   name: string;
 
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
 
-  // password: string;
-  //
-  // age: number;
-  //
-  // address: string;
+  @IsNotEmpty()
+  password: string;
 
-  createdAt: Timestamp;
+  @IsNumber()
+  age: number;
 
-  updatedAt: Timestamp;
+  createdAt: Date;
+
+  updatedAt: Date;
 }
