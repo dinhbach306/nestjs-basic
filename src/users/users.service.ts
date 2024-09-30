@@ -66,6 +66,6 @@ export class UsersService {
   }
 
   remove(id: number) {
-    return `Remove #${id} user`;
+    return `Remove public #${id} user`;
   }
 }
