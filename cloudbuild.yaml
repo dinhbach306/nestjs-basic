@@ -19,6 +19,6 @@ steps:
     args: ['app', 'deploy']
 
 images:
-  - 'gcr.io/massive-pen-298613/nestjs-app'  # Lưu trữ Docker image (tuỳ chọn)
+  - 'asia/asia.gcr.io'  # Lưu trữ Docker image (tuỳ chọn)
 options:
   logging: CLOUD_LOGGING_ONLY
