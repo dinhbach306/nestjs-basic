@@ -2,7 +2,7 @@ steps:
   # Bước 1: Lấy code từ GitHub
   - name: 'gcr.io/cloud-builders/git'
     entrypoint: 'git'
-    args: ['clone', 'https://github.com/dinhbach306/nestjs-basic']
+    args: ['clone', 'git@github.com:dinhbach306/nestjs-basic.git']
 
   # Bước 2: Cài đặt các package cho NestJS bằng Yarn
   - name: 'node:20'  # Sử dụng node phiên bản 16
