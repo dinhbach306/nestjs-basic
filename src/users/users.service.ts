@@ -61,11 +61,23 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(updateUserDto: UpdateUserDto) {
+    if (!mongoose.Types.ObjectId.isValid(updateUserDto._id)) {
+      return 'not found users';
+    }
+    const user = await this.userModel.updateOne(
+      { _id: updateUserDto._id },
+      { ...updateUserDto },
+    );
+    return user;
   }
 
-  remove(id: number) {
-    return `Remove public #${id} user`;
+  remove(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return 'not found users';
+    }
+    return this.userModel.deleteOne({
+      _id: id,
+    });
   }
 }
