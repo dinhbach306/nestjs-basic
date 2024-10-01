@@ -1,29 +1,21 @@
 steps:
-  # Bước 1: Cài đặt các package cho NestJS bằng Yarn và sử dụng cache
-  - name: 'node:20'
+  # Bước 1: Cài đặt các package cho NestJS bằng Yarn
+  - name: 'node:20'  # Sử dụng node phiên bản 20
     entrypoint: 'yarn'
     args: ['install']
-    volumes:
-      - name: 'yarn-cache'
-        path: '/root/.cache/yarn'
 
   # Bước 2: Build ứng dụng với Yarn
   - name: 'node:20'
     entrypoint: 'yarn'
     args: ['build']
-    volumes:
-      - name: 'yarn-cache'
-        path: '/root/.cache/yarn'
 
   # Bước 3: Triển khai ứng dụng lên Google App Engine
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['app', 'deploy']
 
-options:
-  logging: CLOUD_LOGGING_ONLY
+#images:
+#  - 'asia/asia.gcr.io'  # Lưu trữ Docker image (tuỳ chọn)
 
-# Cấu hình cache
-cache:
-  paths:
-    - '/root/.cache/yarn' # Cache Yarn cache
-    - 'node_modules/'      # Cache node_modules nếu cần
+options:
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
