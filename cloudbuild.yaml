@@ -17,5 +17,5 @@ steps:
 #  - 'asia/asia.gcr.io'  # Lưu trữ Docker image (tuỳ chọn)
 
 options:
-  machineType: 'e2-standard-2'
+  machineType: 'N1_HIGHCPU_8'
   logging: CLOUD_LOGGING_ONLY
