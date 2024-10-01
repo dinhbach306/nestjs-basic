@@ -76,8 +76,10 @@ export class UsersService {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return 'not found users';
     }
-    return this.userModel.deleteOne({
+    this.userModel.deleteOne({
       _id: id,
     });
+
+    return 'delete user success';
   }
 }

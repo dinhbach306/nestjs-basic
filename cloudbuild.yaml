@@ -1,6 +1,6 @@
 steps:
   # Bước 1: Cài đặt các package cho NestJS bằng Yarn
-  - name: 'node:20'  # Sử dụng node phiên bản 16
+  - name: 'node:20'  # Sử dụng node phiên bản 20
     entrypoint: 'yarn'
     args: ['install']
 
