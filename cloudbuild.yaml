@@ -1,4 +1,14 @@
 steps:
+  # Tạo file .env từ substitution variables
+  - name: 'gcr.io/cloud-builders/gcloud'
+  - entrypoint: 'bash'
+  - args:
+  - '-c'
+  - |
+  - echo "DATABASE_URL=${_DATABASE_URL}" > .env
+  - echo "JWT_KEY_SECRET=${_JWT_KEY_SECRET}" >> .env
+  - echo "JWT_EXPIRES_IN=${_JWT_EXPIRES_IN}" >> .env
+
   # Bước 1: Cài đặt các package cho NestJS bằng Yarn
   - name: 'node:20'  # Sử dụng node phiên bản 20
     entrypoint: 'yarn'
