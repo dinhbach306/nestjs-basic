@@ -6,11 +6,10 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
+    private configService: ConfigService,
     private readonly logger = new Logger(JwtStrategy.name),
-    private readonly configService: ConfigService,
   ) {
-    const jwtSecretKey =
-      'ad15f42f7cee40b1568cb14843a5fcefcbf4b44cf4feb4609b37e5e454835992';
+    const jwtSecretKey = configService.get<string>('JWT_KEY_SECRET');
     if (!jwtSecretKey) {
       logger.error('JWT_KEY_SECRET is not defined');
       throw new Error('JWT_KEY_SECRET is not defined');
