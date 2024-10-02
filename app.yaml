@@ -4,9 +4,9 @@ env: flex
 runtime_config:
   operating_system: "ubuntu22"
 env_variables:
-  _DATABASE_URL: ##_DATABASE_URL##  
-  _JWT_KEY_SECRET: ##_JWT_KEY_SECRET##
-  _JWT_EXPIRES_IN: ##_JWT_EXPIRES_IN##
+  _DATABASE_URL: ${_DATABASE_URL}
+  _JWT_KEY_SECRET: ${_JWT_KEY_SECRET}
+  _JWT_EXPIRES_IN: ${_JWT_EXPIRES_IN}
 # This sample incurs costs to run on the App Engine flexible environment.
 # The settings below are to reduce costs during testing and are not appropriate
 # for production use. For more information, see:
