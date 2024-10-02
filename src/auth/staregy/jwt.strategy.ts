@@ -9,15 +9,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private configService: ConfigService,
     private readonly logger = new Logger(JwtStrategy.name),
   ) {
-    const jwtSecretKey = configService.get<string>('JWT_KEY_SECRET');
-    if (!jwtSecretKey) {
+    if (!configService.get<string>('JWT_KEY_SECRET')) {
       logger.error('JWT_KEY_SECRET is not defined');
       throw new Error('JWT_KEY_SECRET is not defined');
     }
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtSecretKey,
+      secretOrKey: configService.get<string>('JWT_KEY_SECRET'),
     });
   }
 
