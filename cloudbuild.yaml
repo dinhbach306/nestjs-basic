@@ -1,9 +1,4 @@
 steps:
-  - # Bước 1: Sao chép tệp .env.example thành .env
-  - name: 'node:20'
-  - entrypoint: 'bash'
-  - args: ['-c', 'cp .env.example .env']
-  
   # Bước 2: Cài đặt các package cho NestJS bằng Yarn
   - name: 'node:20'  # Sử dụng node phiên bản 20
     entrypoint: 'yarn'
