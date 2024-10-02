@@ -1,7 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { SoftDelete } from 'src/types/soft-delete.type';
+import { HydratedDocument } from 'mongoose';
+
+export type UserDocument = HydratedDocument<User>;
 
 @Schema({ timestamps: true })
-export class User {
+export class User extends SoftDelete {
   @Prop({ required: true })
   name: string;
 
