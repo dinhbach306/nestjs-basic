@@ -1,26 +1,34 @@
 steps: 
-  # Bước 2: Cài đặt các package cho NestJS bằng Yarn
+  # Bước 1: Cài đặt các package cho NestJS bằng Yarn
   - name: 'node:20'  # Sử dụng node phiên bản 20
     entrypoint: 'yarn'
     args: ['install']
-
+  
+  # Bước 2: Tạo File ENV
+  - name: 'node:20'
+    entrypoint: 'yarn'
+    args: ['run', 'create-env']
+    env:
+      - 'DATABASE_URL=${_DATABASE_URL}'
+      - 'JWT_EXPIRES_IN=${_JWT_EXPIRES_IN}'
+      - 'JWT_KEY_SECRET=${_JWT_KEY_SECRET}'
   # Bước 3: Build ứng dụng với Yarn
   - name: 'node:20'
     entrypoint: 'yarn'
     args: ['build']
 
   # Bước 4: Triển khai ứng dụng lên Google App Engine
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    args: ['app', 'deploy']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['app', 'deploy']
     
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args: [ '-c', 'gcloud config set project ${_PROJECT_ID} && gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy --project=${_PROJECT_ID}' ]
-    env:
-        - 'PROJECT_ID=$_PROJECT_ID'
-        - 'DATABASE_URL=$_DATABASE_URL'
-        - 'JWT_EXPIRES_IN=$_JWT_EXPIRES_IN'
-        - 'JWT_KEY_SECRET=$_JWT_KEY_SECRET'
+#  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+#    entrypoint: 'bash'
+#    args: [ '-c', 'gcloud config set project ${_PROJECT_ID} && gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy --project=${_PROJECT_ID}' ]
+#    env:
+#        - 'PROJECT_ID=$_PROJECT_ID'
+#        - 'DATABASE_URL=$_DATABASE_URL'
+#        - 'JWT_EXPIRES_IN=$_JWT_EXPIRES_IN'
+#        - 'JWT_KEY_SECRET=$_JWT_KEY_SECRET'
 
 #images:
 #  - 'asia/asia.gcr.io'  # Lưu trữ Docker image (tuỳ chọn)
