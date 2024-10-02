@@ -17,10 +17,10 @@ steps:
     entrypoint: 'bash'
     args: [ '-c', 'gcloud config set project ${_PROJECT_ID} && gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy --project=${_PROJECT_ID}' ]
     env:
-        'PROJECT_ID=$_PROJECT_ID'
-        'DATABASE_URL=$_DATABASE_URL'
-        'JWT_EXPIRES_IN=$_JWT_EXPIRES_IN'
-        'JWT_KEY_SECRET=$_JWT_KEY_SECRET'
+        - 'PROJECT_ID=$_PROJECT_ID'
+        - 'DATABASE_URL=$_DATABASE_URL'
+        - 'JWT_EXPIRES_IN=$_JWT_EXPIRES_IN'
+        - 'JWT_KEY_SECRET=$_JWT_KEY_SECRET'
 
 #images:
 #  - 'asia/asia.gcr.io'  # Lưu trữ Docker image (tuỳ chọn)
