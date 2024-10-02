@@ -1,4 +1,19 @@
 steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    env-vars:
+      - DATABASE_URL: ${_DATABASE_URL}
+      - JWT_KEY_SECRET: ${_JWT_KEY_SECRET}
+      - JWT_EXPIRES_IN: ${_JWT_EXPIRES_IN}
+    args:
+      - '-c'
+      - |
+        sed -i "s/##_DATABASE_URL##/$${DATABASE_URL}/g" app.yaml
+        sed -i "s/##_JWT_KEY_SECRET##/$${JWT_KEY_SECRET}/g" app.yaml
+        sed -i "s/##_JWT_EXPIRES_IN##/$${JWT_EXPIRES_IN}/g" app.yaml
+        gcloud config set app/cloud_build_timeout 1600
+        gcloud app deploy
+
   # Bước 2: Cài đặt các package cho NestJS bằng Yarn
   - name: 'node:20'  # Sử dụng node phiên bản 20
     entrypoint: 'yarn'
@@ -15,6 +30,8 @@ steps:
 
 #images:
 #  - 'asia/asia.gcr.io'  # Lưu trữ Docker image (tuỳ chọn)
+timeout: '1600s'
+
 substitutions:
   _DATABASE_URL: ${_DATABASE_URL}
   _JWT_KEY_SECRET: ${_JWT_KEY_SECRET}
