@@ -8,10 +8,6 @@ runtime_config:
 # The settings below are to reduce costs during testing and are not appropriate
 # for production use. For more information, see:
 # https://cloud.google.com/appengine/docs/flexible/nodejs/configuring-your-app-with-app-yaml
-env_variables:
-  JWT_KEY_SECRET: ${_JWT_KEY_SECRET}
-  JWT_EXPIRES_IN: ${_JWT_EXPIRES_IN}
-  DATABASE_URL: ${_DATABASE_URL}
   
 manual_scaling:
   instances: 2
