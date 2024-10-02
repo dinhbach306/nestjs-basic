@@ -4,9 +4,9 @@ steps:
     args:
       - '-c'
       - |
-        sed -i "s/##_DATABASE_URL##/$${_DATABASE_URL}/g" app.yaml
-        sed -i "s/##_JWT_KEY_SECRET##/$${_JWT_KEY_SECRET}/g" app.yaml
-        sed -i "s/##_JWT_EXPIRES_IN##/$${_JWT_EXPIRES_IN}/g" app.yaml
+        sed -i "s|##_DATABASE_URL##|${_DATABASE_URL}|g" app.yaml
+        sed -i "s/##_JWT_KEY_SECRET##/$${_JWT_KEY_SECRET}|g" app.yaml
+        sed -i "s/##_JWT_EXPIRES_IN##/$${_JWT_EXPIRES_IN}|g" app.yaml
         gcloud config set app/cloud_build_timeout 1600
         gcloud app deploy
 
