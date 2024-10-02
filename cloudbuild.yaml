@@ -15,6 +15,9 @@ steps:
 
 #images:
 #  - 'asia/asia.gcr.io'  # Lưu trữ Docker image (tuỳ chọn)
-
+substitutions:
+  _DATABASE_URL: ${_DATABASE_URL}
+  _JWT_KEY_SECRET: ${_JWT_KEY_SECRET}
+  _JWT_EXPIRES_IN: ${_JWT_EXPIRES_IN}
 options:
   logging: CLOUD_LOGGING_ONLY
