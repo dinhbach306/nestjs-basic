@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from 'src/users/schemas/user.schema';
-import { Error, Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
@@ -36,7 +36,13 @@ export class AuthService {
       updatedAt: new Date(),
     });
 
-    const token = this.jwtService.sign({ id: user._id });
+    const token = this.jwtService.sign({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      sub: 'token login',
+      iss: 'from server',
+    });
     return { token };
   }
 
@@ -45,12 +51,12 @@ export class AuthService {
     const user = await this.userModal.findOne({ email });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new UnauthorizedException('Username/password không hợp lệ');
     }
 
     const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!isPasswordValid) {
-      throw new Error('Invalid password');
+      throw new UnauthorizedException('Username/password không hợp lệ');
     }
 
     const token = this.jwtService.sign({ id: user._id });
