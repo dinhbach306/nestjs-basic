@@ -19,4 +19,8 @@ export class AppService {
   delete(): string {
     return 'delete success';
   }
+
+  updateMany(): string {
+    return 'updateMany success';
+  }
 }
