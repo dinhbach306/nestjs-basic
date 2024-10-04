@@ -31,8 +31,4 @@ export class AppService {
   deleteMany(): string {
     return 'deleteMany success';
   }
-
-  pull(): string {
-    return 'pull success';
-  }
 }
