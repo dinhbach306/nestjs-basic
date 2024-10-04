@@ -16,6 +16,10 @@ export class AppService {
     return 'findOne success';
   }
 
+  update(): string {
+    return 'update success';
+  }
+
   delete(): string {
     return 'delete success';
   }
