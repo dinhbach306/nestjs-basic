@@ -12,6 +12,10 @@ export class AppService {
     return 'findAll success';
   }
 
+  findOne(): string {
+    return 'findOne success';
+  }
+
   delete(): string {
     return 'delete success';
   }
