@@ -27,12 +27,4 @@ export class AppService {
   updateMany(): string {
     return 'updateMany success';
   }
-
-  deleteMany(): string {
-    return 'deleteMany success';
-  }
-
-  pull(): string {
-    return 'pull success';
-  }
 }
