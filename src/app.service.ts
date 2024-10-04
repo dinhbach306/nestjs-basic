@@ -35,4 +35,8 @@ export class AppService {
   pull(): string {
     return 'pull success';
   }
+
+  pullV2(): string {
+    return 'pull success';
+  }
 }
