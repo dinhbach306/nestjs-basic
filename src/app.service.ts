@@ -11,4 +11,8 @@ export class AppService {
   findAll(): string {
     return 'findAll success';
   }
+
+  delete(): string {
+    return 'delete success';
+  }
 }
