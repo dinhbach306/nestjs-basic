@@ -1,11 +1,11 @@
 steps: 
   # Bước 1: Cài đặt các package cho NestJS bằng Yarn
-  - name: 'node:20'  # Sử dụng node phiên bản 20
+  - name: 'node:22.2.0'  # Sử dụng node phiên bản 20
     entrypoint: 'yarn'
     args: ['install']
   
   # Bước 2: Tạo File ENV
-  - name: 'node:20'
+  - name: 'node:22.2.0'
     entrypoint: 'yarn'
     args: ['run', 'create-env']
     env:
@@ -13,7 +13,7 @@ steps:
       - 'JWT_EXPIRES_IN=${_JWT_EXPIRES_IN}'
       - 'JWT_KEY_SECRET=${_JWT_KEY_SECRET}'
   # Bước 3: Build ứng dụng với Yarn
-  - name: 'node:20'
+  - name: 'node:22.2.0'
     entrypoint: 'yarn'
     args: ['build']
 
