@@ -88,6 +88,8 @@ export class AuthService {
     const refreshToken = this.createRefreshToken(payload);
     await this.userService.updateUserToken(refreshToken, user._id);
 
+    //Clear old refresh token and set new refresh token
+    res.clearCookie('refresh-token');
     res.cookie('refresh-token', refreshToken, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
@@ -111,8 +113,6 @@ export class AuthService {
       const refreshTokenPayload = this.jwtService.verify(refreshToken, {
         secret: this.configService.get<string>('JWT_REFRESH_KEY_SECRET'),
       });
-
-      console.log('refreshTokenPayload', refreshTokenPayload);
 
       //TODO: login with refresh token
       const user = await this.userModal.findOne({
