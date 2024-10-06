@@ -32,10 +32,11 @@ export class CompaniesService {
     };
   }
 
-  async findAll(page: number, limit: number, qs: string) {
+  async findAll(page: number, limit: number, qs: string): Promise<any> {
+    const exclude = ['page', 'sort', 'limit'];
     const { filter, sort, population } = aqp(qs);
 
-    ['page', 'sort', 'limit'].forEach((key) => delete filter[key]);
+    exclude.forEach((key) => delete filter[key]);
 
     const offset = (+page - 1) * +limit;
     const defaultLimit = +limit ? +limit : 10;

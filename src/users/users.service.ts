@@ -1,10 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcryptjs';
 import { User, UserDocument } from 'src/users/schemas/user.schema';
 import mongoose, { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ResponseCommon } from '../types/response-common';
+import aqp from 'api-query-params';
 
 @Injectable()
 export class UsersService {
@@ -52,13 +53,40 @@ export class UsersService {
     };
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(
+    page: number,
+    limit: number,
+    sortParam: string,
+    qs: string,
+  ): Promise<any> {
     try {
-      const users = await this.userModel.find().exec();
-      return users;
+      const exclude = ['page', 'limit'];
+      const { filter, sort, population } = aqp(qs);
+      exclude.forEach((key) => delete filter[key]);
+      const offset = (+page - 1) * +limit;
+      const defaultLimit = +limit ? +limit : 10;
+
+      const totalItems = await this.userModel.find(filter).countDocuments();
+      const totalPages = Math.ceil(totalItems / defaultLimit);
+      const result = await this.userModel
+        .find(filter)
+        .skip(offset)
+        .limit(defaultLimit)
+        .sort(sort as any)
+        .populate(population)
+        .exec();
+
+      return {
+        meta: {
+          current: page,
+          pageSize: limit,
+          pages: totalPages,
+          total: totalItems,
+        },
+        result,
+      };
     } catch (error) {
-      this.logger.error('Error fetching users', error.stack);
-      throw error;
+      throw new BadRequestException('Bad request', error);
     }
   }
 
