@@ -6,6 +6,7 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from 'src/auth/dto/signup.dto';
 import { LoginDto } from 'src/auth/dto/login.dto';
+import { IUser } from '../users/user.interface';
 
 @Injectable()
 export class AuthService {
@@ -48,7 +49,7 @@ export class AuthService {
 
   async login(req: LoginDto): Promise<{ token: string }> {
     const { email, password } = req;
-    const user = await this.userModal.findOne({ email });
+    const user: IUser = await this.userModal.findOne({ email });
 
     if (!user) {
       throw new UnauthorizedException('Username/password không hợp lệ');
@@ -59,7 +60,11 @@ export class AuthService {
       throw new UnauthorizedException('Username/password không hợp lệ');
     }
 
-    const token = this.jwtService.sign({ id: user._id });
+    const token = this.jwtService.sign({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    });
     return { token };
   }
 }

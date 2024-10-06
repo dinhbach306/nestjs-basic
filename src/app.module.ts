@@ -8,7 +8,6 @@ import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from 'src/auth/staregy/jwt.strategy';
-import { DELETED_AT_FIELD, IS_DELETED_FIELD } from 'src/types/soft-delete.type';
 
 @Module({
   imports: [

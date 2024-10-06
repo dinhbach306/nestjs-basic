@@ -1,11 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { SoftDelete } from 'src/types/soft-delete.type';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { SoftDeleteSchema } from '../../types/soft-delete.type';
+
+// defind soft delete field name
 
 export type CompanyDocument = HydratedDocument<Company>;
 
 @Schema({ timestamps: true })
-export class Company extends SoftDelete {
+export class Company extends SoftDeleteSchema {
   @Prop()
   name: string;
 
