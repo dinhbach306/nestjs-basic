@@ -148,6 +148,13 @@ export class AuthService {
     }
   }
 
+  async handleLogout(res: Response, user: IUser): Promise<ResponseCommon<any>> {
+    await this.userService.updateUserToken('', user._id);
+    res.clearCookie('refresh-token');
+
+    return { result: 'ok' };
+  }
+
   createRefreshToken = (payload) => {
     const refreshToken = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_REFRESH_KEY_SECRET'),

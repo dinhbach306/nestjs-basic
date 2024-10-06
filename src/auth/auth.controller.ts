@@ -7,6 +7,7 @@ import { ResponseCommon } from '../types/response-common';
 import { ResponseMessage } from '../decorator/response-message.decorator';
 import { Request, Response } from 'express';
 import { User } from '../decorator/user.decorator';
+import { IUser } from '../users/user.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -45,5 +46,11 @@ export class AuthController {
     const refreshToken = request.cookies['refresh-token'];
 
     return this.authService.refreshToken(refreshToken, res);
+  }
+
+  @ResponseMessage('Sign out successfully')
+  @Post('/logout')
+  handleLogout(@Res({ passthrough: true }) res: Response, @User() user: IUser) {
+    return this.authService.handleLogout(res, user);
   }
 }
