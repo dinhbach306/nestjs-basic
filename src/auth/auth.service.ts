@@ -8,6 +8,9 @@ import { SignupDto } from 'src/auth/dto/signup.dto';
 import { LoginDto } from 'src/auth/dto/login.dto';
 import { IUser } from '../users/user.interface';
 import { ResponseCommon } from '../types/response-common';
+import { ConfigService } from '@nestjs/config';
+import { UsersService } from '../users/users.service';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +18,8 @@ export class AuthService {
     @InjectModel(User.name)
     private userModal: Model<User>,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly userService: UsersService,
   ) {}
 
   hashPassword = (password: string) => {
@@ -25,7 +30,7 @@ export class AuthService {
   };
 
   async signUp(req: SignupDto): Promise<ResponseCommon<any>> {
-    const { name, email, password, age } = req;
+    const { name, email, password, age, gender, address } = req;
 
     const hashPassword = this.hashPassword(password);
 
@@ -34,21 +39,28 @@ export class AuthService {
       email,
       password: hashPassword,
       age,
+      gender,
+      address,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
 
-    const token = this.jwtService.sign({
-      id: user._id,
+    const payload = {
+      _id: user._id,
       name: user.name,
       email: user.email,
       sub: 'token login',
       iss: 'from server',
-    });
-    return { result: token };
+    };
+
+    const refreshToken = this.createRefreshToken(payload);
+
+    const token = this.jwtService.sign(payload);
+
+    return { result: { token, refreshToken } };
   }
 
-  async login(req: LoginDto): Promise<ResponseCommon<any>> {
+  async login(req: LoginDto, res: Response): Promise<ResponseCommon<any>> {
     const { email, password } = req;
     const user: IUser = await this.userModal.findOne({ email });
 
@@ -61,11 +73,36 @@ export class AuthService {
       throw new UnauthorizedException('Username/password không hợp lệ');
     }
 
-    const token = this.jwtService.sign({
+    const payload = {
       _id: user._id,
       name: user.name,
       email: user.email,
+      sub: 'token login',
+      iss: 'from server',
+    };
+
+    const refreshToken = this.createRefreshToken(payload);
+    await this.userService.updateUserToken(refreshToken, user._id);
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24,
     });
-    return { result: token };
+
+    const token = this.jwtService.sign(payload);
+
+    return {
+      result: {
+        token,
+      },
+    };
   }
+
+  createRefreshToken = (payload) => {
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('JWT_REFRESH_KEY_SECRET'),
+      expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRES_IN'),
+    });
+    return refreshToken;
+  };
 }

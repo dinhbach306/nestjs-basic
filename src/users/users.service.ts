@@ -4,6 +4,7 @@ import * as bcrypt from 'bcryptjs';
 import { User, UserDocument } from 'src/users/schemas/user.schema';
 import mongoose, { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { ResponseCommon } from '../types/response-common';
 
 @Injectable()
 export class UsersService {
@@ -26,19 +27,29 @@ export class UsersService {
     email,
     password,
     age,
+    gender,
+    address,
+    role,
+    company,
     createdAt,
     updatedAt,
-  }): Promise<User> {
+  }): Promise<ResponseCommon<User>> {
     const hashPassword = this.hashPassword(password);
     const user = await this.userModel.create({
       name,
       email,
       password: hashPassword,
       age,
+      gender,
+      address,
+      role,
+      company,
       createdAt,
       updatedAt,
     });
-    return user;
+    return {
+      result: user,
+    };
   }
 
   async findAll(): Promise<User[]> {
@@ -82,4 +93,13 @@ export class UsersService {
 
     return 'delete user success';
   }
+
+  updateUserToken = async (refreshToken: string, _id: any) => {
+    const update = await this.userModel.updateOne(
+      { _id: _id },
+      { refreshToken: refreshToken },
+    );
+
+    return update;
+  };
 }

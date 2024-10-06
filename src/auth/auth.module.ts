@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthController } from 'src/auth/auth.controller';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtStrategy } from 'src/auth/staregy/jwt.strategy';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { JwtStrategy } from 'src/auth/staregy/jwt.strategy';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        secretOrPrivateKey: configService.get<string>('JWT_KEY_SECRET'),
+        secret: configService.get<string>('JWT_KEY_SECRET'),
         signOptions: {
           expiresIn: configService.get<string | number>('JWT_EXPIRES_IN'),
         },
@@ -24,6 +25,6 @@ import { JwtStrategy } from 'src/auth/staregy/jwt.strategy';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, UsersService, JwtStrategy],
 })
 export class AuthModule {}
