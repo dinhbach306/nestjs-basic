@@ -6,6 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { IUser } from '../users/user.interface';
 import { Model } from 'mongoose';
 import aqp from 'api-query-params';
+import { ResponseCommon } from '../types/response-common';
 
 @Injectable()
 export class CompaniesService {
@@ -17,7 +18,7 @@ export class CompaniesService {
   async create(
     createCompanyDto: CreateCompanyDto,
     user: IUser,
-  ): Promise<Company> {
+  ): Promise<ResponseCommon<Company>> {
     const company = await this.companyModel.create({
       ...createCompanyDto,
       createBy: {
@@ -26,17 +27,15 @@ export class CompaniesService {
       },
     });
 
-    return company;
+    return {
+      result: company,
+    };
   }
 
   async findAll(page: number, limit: number, qs: string) {
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
     const { filter, sort, population } = aqp(qs);
 
-    const queryObj = { ...filter };
-    excludedFields.forEach((fields) => {
-      delete queryObj[fields];
-    });
+    ['page', 'sort', 'limit'].forEach((key) => delete filter[key]);
 
     const offset = (+page - 1) * +limit;
     const defaultLimit = +limit ? +limit : 10;

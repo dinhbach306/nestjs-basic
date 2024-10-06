@@ -13,6 +13,7 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { User } from '../decorator/user.decorator';
 import { IUser } from '../users/user.interface';
+import { ResponseMessage } from '../decorator/response-message.decorator';
 
 @Controller('companies')
 export class CompaniesController {
@@ -24,6 +25,7 @@ export class CompaniesController {
   }
 
   @Get()
+  @ResponseMessage('Get all companies')
   findAll(
     @Query('page') page: number,
     @Query('limit') limit: number,

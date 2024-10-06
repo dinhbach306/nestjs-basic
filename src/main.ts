@@ -2,10 +2,12 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { TransformInterceptor } from './interceptor/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const reflector = app.get(Reflector);
+
   //Config CORS
   app.enableCors({
     origin: '*',
@@ -14,7 +16,7 @@ async function bootstrap() {
     optionsSuccessStatus: 204,
   });
 
-  //Validator
+  //Pipe Validation
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -22,7 +24,14 @@ async function bootstrap() {
       transformOptions: { enableImplicitConversion: true },
     }),
   );
+
+  //Guard
+  //Nếu có sử dụng reflector bên Guard thì phải truyền vào
   app.useGlobalGuards(new JwtAuthGuard(reflector));
+
+  //Interceptor
+  //Nếu có sử dụng reflector bên Interceptor thì phải truyền vào
+  app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
   await app.listen(8080);
 }
