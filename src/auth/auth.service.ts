@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { User } from 'src/users/schemas/user.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -84,7 +88,7 @@ export class AuthService {
     const refreshToken = this.createRefreshToken(payload);
     await this.userService.updateUserToken(refreshToken, user._id);
 
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie('refresh-token', refreshToken, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
     });
@@ -96,6 +100,52 @@ export class AuthService {
         token,
       },
     };
+  }
+
+  async refreshToken(
+    refreshToken: string,
+    res: Response,
+  ): Promise<ResponseCommon<any>> {
+    try {
+      //Verify refresh token, If not valid or expired, throw error
+      const refreshTokenPayload = this.jwtService.verify(refreshToken, {
+        secret: this.configService.get<string>('JWT_REFRESH_KEY_SECRET'),
+      });
+
+      console.log('refreshTokenPayload', refreshTokenPayload);
+
+      //TODO: login with refresh token
+      const user = await this.userModal.findOne({
+        refreshToken: refreshToken,
+      });
+      if (!user || user.email !== refreshTokenPayload.email)
+        throw new BadRequestException('Refresh not valid');
+
+      const payload = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        sub: 'token login',
+        iss: 'from server',
+      };
+
+      const newRefreshToken = this.createRefreshToken(payload);
+      await this.userService.updateUserToken(newRefreshToken, user._id);
+
+      res.cookie('refresh-token', newRefreshToken, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+      });
+
+      const token = this.jwtService.sign(payload);
+      return {
+        result: {
+          token,
+        },
+      };
+    } catch (error) {
+      throw new BadRequestException('Refresh not valid', error);
+    }
   }
 
   createRefreshToken = (payload) => {
