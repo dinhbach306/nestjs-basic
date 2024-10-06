@@ -15,8 +15,15 @@ async function bootstrap() {
   });
 
   //Validator
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    }),
+  );
   app.useGlobalGuards(new JwtAuthGuard(reflector));
+
   await app.listen(8080);
 }
 

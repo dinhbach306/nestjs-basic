@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
@@ -19,13 +20,16 @@ export class CompaniesController {
 
   @Post()
   create(@Body() createCompanyDto: CreateCompanyDto, @User() user: IUser) {
-    console.log('user info -> :', user);
-    return this.companiesService.create(createCompanyDto);
+    return this.companiesService.create(createCompanyDto, user);
   }
 
   @Get()
-  findAll() {
-    return this.companiesService.findAll();
+  findAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query() qs: string,
+  ) {
+    return this.companiesService.findAll(+page, +limit, qs);
   }
 
   @Get(':id')
@@ -33,13 +37,17 @@ export class CompaniesController {
     return this.companiesService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto) {
-    return this.companiesService.update(+id, updateCompanyDto);
+  @Patch(':_id')
+  update(
+    @Param('_id') _id: string,
+    @Body() updateCompanyDto: UpdateCompanyDto,
+    @User() user: IUser,
+  ) {
+    return this.companiesService.update(_id, updateCompanyDto, user);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.companiesService.remove(+id);
+  @Delete(':_id')
+  remove(@Param('_id') _id: string[]) {
+    return this.companiesService.softDeleteCompany(_id);
   }
 }
