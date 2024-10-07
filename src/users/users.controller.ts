@@ -14,7 +14,6 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ResponseMessage } from 'src/decorator/response-message.decorator';
-import { makeQuerySort } from 'src/utils/makeQuerySort';
 
 @Controller('users')
 export class UsersController {
