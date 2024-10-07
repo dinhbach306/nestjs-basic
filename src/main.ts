@@ -3,6 +3,9 @@ import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { dump } from 'js-yaml';
+import { writeFileSync } from 'fs';
 import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
@@ -44,6 +47,21 @@ async function bootstrap() {
   //Interceptor
   //Nếu có sử dụng reflector bên Interceptor thì phải truyền vào
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
+
+  //Swagger OpenAPI
+  const config = new DocumentBuilder()
+    .setTitle('Cats example')
+    .setDescription('The cats API description')
+    .setVersion('1.0')
+    .addTag('cats')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  //Convert to YAML and save to file
+  const yaml = dump(document);
+  writeFileSync('./fern/openapi/openapi.yml', yaml);
+
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(8080);
 }
