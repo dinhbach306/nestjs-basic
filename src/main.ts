@@ -22,10 +22,11 @@ async function bootstrap() {
 
   //Config CORS
   app.enableCors({
-    origin: '*',
+    origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,
+    credentials: true,
   });
 
   //Pipe Validation
@@ -50,15 +51,16 @@ async function bootstrap() {
 
   //Swagger OpenAPI
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('NestJS API')
+    .setDescription('The simple Nest API description')
     .setVersion('1.0')
-    .addTag('cats')
+    .addTag('Nest')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   //Convert to YAML and save to file
   const yaml = dump(document);
+  console.log(yaml);
   writeFileSync('./fern/openapi/openapi.yml', yaml);
 
   SwaggerModule.setup('docs', app, document);

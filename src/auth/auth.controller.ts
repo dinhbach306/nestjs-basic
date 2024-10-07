@@ -8,7 +8,9 @@ import { ResponseMessage } from '../decorator/response-message.decorator';
 import { Request, Response } from 'express';
 import { User } from '../decorator/user.decorator';
 import { IUser } from '../users/user.interface';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

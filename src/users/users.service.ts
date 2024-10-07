@@ -60,7 +60,7 @@ export class UsersService {
     qs: string,
   ): Promise<any> {
     try {
-      const exclude = ['page', 'limit'];
+      const exclude = ['current', 'pageSize'];
       const { filter, sort, population } = aqp(qs);
       exclude.forEach((key) => delete filter[key]);
       const offset = (+page - 1) * +limit;
@@ -100,12 +100,12 @@ export class UsersService {
     return user;
   }
 
-  async update(updateUserDto: UpdateUserDto) {
-    if (!mongoose.Types.ObjectId.isValid(updateUserDto._id)) {
+  async update(_id: string, updateUserDto: UpdateUserDto) {
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
       return 'not found users';
     }
     const user = await this.userModel.updateOne(
-      { _id: updateUserDto._id },
+      { _id: _id },
       { ...updateUserDto },
     );
     return user;

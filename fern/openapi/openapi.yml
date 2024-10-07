@@ -51,15 +51,17 @@ paths:
       responses:
         '201':
           description: ''
+      tags: &ref_0
+        - Company
     get:
       operationId: CompaniesController_findAll
       parameters:
-        - name: page
+        - name: current
           required: true
           in: query
           schema:
             type: number
-        - name: limit
+        - name: pageSize
           required: true
           in: query
           schema:
@@ -67,6 +69,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_0
   /api/v2/companies:
     post:
       operationId: CompaniesController_create
@@ -80,15 +83,16 @@ paths:
       responses:
         '201':
           description: ''
+      tags: *ref_0
     get:
       operationId: CompaniesController_findAll
       parameters:
-        - name: page
+        - name: current
           required: true
           in: query
           schema:
             type: number
-        - name: limit
+        - name: pageSize
           required: true
           in: query
           schema:
@@ -96,6 +100,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_0
   /api/v1/companies/{id}:
     get:
       operationId: CompaniesController_findOne
@@ -108,6 +113,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_0
   /api/v2/companies/{id}:
     get:
       operationId: CompaniesController_findOne
@@ -120,6 +126,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_0
   /api/v1/companies/{_id}:
     patch:
       operationId: CompaniesController_update
@@ -138,6 +145,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_0
     delete:
       operationId: CompaniesController_remove
       parameters:
@@ -151,6 +159,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_0
   /api/v2/companies/{_id}:
     patch:
       operationId: CompaniesController_update
@@ -169,6 +178,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_0
     delete:
       operationId: CompaniesController_remove
       parameters:
@@ -182,6 +192,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_0
   /api/v1/users:
     post:
       operationId: UsersController_create
@@ -195,15 +206,17 @@ paths:
       responses:
         '201':
           description: ''
+      tags: &ref_1
+        - User
     get:
       operationId: UsersController_findAll
       parameters:
-        - name: page
+        - name: current
           required: true
           in: query
           schema:
             type: number
-        - name: limit
+        - name: pageSize
           required: true
           in: query
           schema:
@@ -216,6 +229,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_1
   /api/v2/users:
     post:
       operationId: UsersController_create
@@ -229,15 +243,16 @@ paths:
       responses:
         '201':
           description: ''
+      tags: *ref_1
     get:
       operationId: UsersController_findAll
       parameters:
-        - name: page
+        - name: current
           required: true
           in: query
           schema:
             type: number
-        - name: limit
+        - name: pageSize
           required: true
           in: query
           schema:
@@ -250,6 +265,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_1
   /api/v1/users/{id}:
     get:
       operationId: UsersController_findOne
@@ -262,9 +278,15 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_1
     patch:
       operationId: UsersController_update
-      parameters: []
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -274,6 +296,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_1
     delete:
       operationId: UsersController_remove
       parameters:
@@ -285,6 +308,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_1
   /api/v2/users/{id}:
     get:
       operationId: UsersController_findOne
@@ -297,9 +321,15 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_1
     patch:
       operationId: UsersController_update
-      parameters: []
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -309,6 +339,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_1
     delete:
       operationId: UsersController_remove
       parameters:
@@ -320,6 +351,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_1
   /api/v1/auth/sign-up:
     post:
       operationId: AuthController_signUp
@@ -333,6 +365,8 @@ paths:
       responses:
         '201':
           description: ''
+      tags: &ref_2
+        - Auth
   /api/v2/auth/sign-up:
     post:
       operationId: AuthController_signUp
@@ -346,6 +380,7 @@ paths:
       responses:
         '201':
           description: ''
+      tags: *ref_2
   /api/v1/auth/sign-in:
     post:
       operationId: AuthController_signIn
@@ -359,6 +394,7 @@ paths:
       responses:
         '201':
           description: ''
+      tags: *ref_2
   /api/v2/auth/sign-in:
     post:
       operationId: AuthController_signIn
@@ -372,6 +408,7 @@ paths:
       responses:
         '201':
           description: ''
+      tags: *ref_2
   /api/v1/auth/me:
     get:
       operationId: AuthController_handleGetAccount
@@ -379,6 +416,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_2
   /api/v2/auth/me:
     get:
       operationId: AuthController_handleGetAccount
@@ -386,6 +424,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_2
   /api/v1/auth/refresh-token:
     get:
       operationId: AuthController_handleRefreshToken
@@ -393,6 +432,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_2
   /api/v2/auth/refresh-token:
     get:
       operationId: AuthController_handleRefreshToken
@@ -400,6 +440,7 @@ paths:
       responses:
         '200':
           description: ''
+      tags: *ref_2
   /api/v1/auth/logout:
     post:
       operationId: AuthController_handleLogout
@@ -407,6 +448,7 @@ paths:
       responses:
         '201':
           description: ''
+      tags: *ref_2
   /api/v2/auth/logout:
     post:
       operationId: AuthController_handleLogout
@@ -414,32 +456,317 @@ paths:
       responses:
         '201':
           description: ''
+      tags: *ref_2
+  /api/v1/files/upload:
+    post:
+      operationId: FilesController_uploadFile
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags: &ref_3
+        - File
+  /api/v2/files/upload:
+    post:
+      operationId: FilesController_uploadFile
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags: *ref_3
+  /api/v1/files:
+    post:
+      operationId: FilesController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFileDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_3
+    get:
+      operationId: FilesController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_3
+  /api/v2/files:
+    post:
+      operationId: FilesController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFileDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_3
+    get:
+      operationId: FilesController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_3
+  /api/v1/files/{id}:
+    get:
+      operationId: FilesController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags: *ref_3
+    patch:
+      operationId: FilesController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFileDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_3
+    delete:
+      operationId: FilesController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags: *ref_3
+  /api/v2/files/{id}:
+    get:
+      operationId: FilesController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags: *ref_3
+    patch:
+      operationId: FilesController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFileDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_3
+    delete:
+      operationId: FilesController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags: *ref_3
 info:
-  title: Cats example
-  description: The cats API description
+  title: NestJS API
+  description: The simple Nest API description
   version: '1.0'
   contact: {}
 tags:
-  - name: cats
+  - name: Nest
     description: ''
 servers: []
 components:
   schemas:
     CreateCompanyDto:
       type: object
-      properties: {}
+      properties:
+        name:
+          type: string
+          description: Name of company
+          example: Company 1
+        address:
+          type: string
+          description: Address of company
+          example: 123/4/5 Nguyen Van Linh
+        description:
+          type: string
+          description: Description of company
+          example: Company 1 is a company
+      required:
+        - name
+        - address
+        - description
     UpdateCompanyDto:
       type: object
       properties: {}
+    SchemaObjectId:
+      type: object
+      properties: {}
+    CompanyDto:
+      type: object
+      properties:
+        _id:
+          description: Company ID
+          example: 60f2e3f7d1c7d2b6f4c6e
+          allOf:
+            - $ref: '#/components/schemas/SchemaObjectId'
+        name:
+          type: string
+          description: Company name
+          example: Company 1
+      required:
+        - _id
+        - name
     CreateUserDto:
       type: object
-      properties: {}
+      properties:
+        name:
+          type: string
+          description: User name
+          example: User 1
+        email:
+          type: string
+          description: User email
+          example: test@gmail.com
+        password:
+          type: string
+          description: User password
+          example: '123456'
+        age:
+          type: number
+          description: User age
+          minimum: 1
+          example: 20
+        gender:
+          type: string
+          description: User gender
+          example: Male
+        address:
+          type: string
+          description: User address
+          example: Hanoi
+        role:
+          type: string
+          description: User role
+          example: Admin
+        company:
+          description: User company
+          allOf:
+            - $ref: '#/components/schemas/CompanyDto'
+      required:
+        - name
+        - email
+        - password
+        - age
+        - gender
+        - address
+        - role
+        - company
     UpdateUserDto:
       type: object
-      properties: {}
+      properties:
+        _id:
+          type: string
+          description: User id
+          example: '123456'
+      required:
+        - _id
     SignupDto:
       type: object
-      properties: {}
+      properties:
+        name:
+          type: string
+          description: User name
+          example: User 1
+        email:
+          type: string
+          description: User email
+          example: test@gmail.com
+        password:
+          type: string
+          description: User password
+          example: '123456'
+        age:
+          type: number
+          description: User age
+          minimum: 1
+          example: 20
+        gender:
+          type: string
+          description: User gender
+          example: Male
+        address:
+          type: string
+          description: User address
+          example: Hanoi
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - name
+        - email
+        - password
+        - age
+        - gender
+        - address
+        - createdAt
+        - updatedAt
     LoginDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: User email
+          example: test@gmail.com
+        password:
+          type: string
+          description: User password
+          example: '123456'
+      required:
+        - email
+        - password
+    CreateFileDto:
+      type: object
+      properties: {}
+    UpdateFileDto:
       type: object
       properties: {}

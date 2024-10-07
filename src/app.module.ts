@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from 'src/auth/staregy/jwt.strategy';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JwtStrategy } from 'src/auth/staregy/jwt.strategy';
     CompaniesModule,
     UsersModule,
     AuthModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],

@@ -2,7 +2,7 @@ instances:
   - url: https://dinhbach-306.docs.buildwithfern.com
 title: NestJS Basic
 navigation:
-  - api: API Reference
+  - api: http://localhost:8000/api/v1/
 
 colors:
   accentPrimary:
@@ -10,9 +10,7 @@ colors:
     light: "#af5f1b"
 
 logo:
-  dark: ./docs/assets/logo-dark-mode.png
-  light: ./docs/assets/logo-light-mode.png
+  dark: ./assets/nestjs-logo.png
+  light: ./assets/nestjs-logo.png
   height: 40
-  href: https://buildwithfern.com/
-
-favicon: ./docs/assets/favicon.png
+  href: https://docs.nestjs.com/

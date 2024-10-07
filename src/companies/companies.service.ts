@@ -33,7 +33,7 @@ export class CompaniesService {
   }
 
   async findAll(page: number, limit: number, qs: string): Promise<any> {
-    const exclude = ['page', 'sort', 'limit'];
+    const exclude = ['current', 'sort', 'pageSize'];
     const { filter, sort, population } = aqp(qs);
 
     exclude.forEach((key) => delete filter[key]);
