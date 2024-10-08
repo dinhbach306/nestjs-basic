@@ -1,3 +1,4 @@
+
 api:
   path: openapi\openapi.yml
   display-errors: true

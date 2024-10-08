@@ -31,10 +31,7 @@ export class TransformInterceptor<T>
         message:
           this.reflector.get<string>(RESPONSE_MESSAGE, context.getHandler()) ||
           'No message',
-        data: {
-          result: data.result,
-          meta: data?.meta ?? {}, // if this is supposed to be the actual return then replace {} with data.result
-        },
+        data: data?.result || data,
       })),
     );
   }

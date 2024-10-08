@@ -490,7 +490,17 @@ paths:
       tags: *ref_3
     get:
       operationId: FilesController_findAll
-      parameters: []
+      parameters:
+        - name: current
+          required: true
+          in: query
+          schema:
+            type: number
+        - name: pageSize
+          required: true
+          in: query
+          schema:
+            type: number
       responses:
         '200':
           description: ''
@@ -511,7 +521,17 @@ paths:
       tags: *ref_3
     get:
       operationId: FilesController_findAll
-      parameters: []
+      parameters:
+        - name: current
+          required: true
+          in: query
+          schema:
+            type: number
+        - name: pageSize
+          required: true
+          in: query
+          schema:
+            type: number
       responses:
         '200':
           description: ''
@@ -549,12 +569,7 @@ paths:
       tags: *ref_3
     delete:
       operationId: FilesController_remove
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      parameters: []
       responses:
         '200':
           description: ''
@@ -592,12 +607,7 @@ paths:
       tags: *ref_3
     delete:
       operationId: FilesController_remove
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      parameters: []
       responses:
         '200':
           description: ''
@@ -766,7 +776,116 @@ components:
         - password
     CreateFileDto:
       type: object
-      properties: {}
+      properties:
+        name:
+          type: string
+          description: Name of file
+          example: File
+        skills:
+          description: Skill of file
+          example: Skill
+          type: array
+          items:
+            type: string
+        company:
+          type: object
+          description: Company
+          example: &ref_4
+            _id: 60f1b6b3b3b3b3b3b3b3b3b3
+            name: Company 1
+        location:
+          type: string
+          description: Location of file
+          example: Location
+        salary:
+          type: number
+          description: Salary of file
+          example: 1000
+        quantity:
+          type: number
+          description: Quantity of file
+          example: 100
+        level:
+          type: string
+          description: Level of file
+          example: Level
+        description:
+          type: string
+          description: Description of file
+          example: Description
+        startDate:
+          format: date-time
+          type: string
+          description: Start date of file
+          example: '2021-07-17T00:00:00.000Z'
+        endDate:
+          format: date-time
+          type: string
+          description: End date of file
+          example: '2021-07-17T00:00:00.000Z'
+        isActive:
+          type: boolean
+          description: Is active
+          example: true
+      required:
+        - name
+        - skills
+        - company
+        - location
+        - salary
+        - quantity
+        - level
+        - startDate
+        - endDate
+        - isActive
     UpdateFileDto:
       type: object
-      properties: {}
+      properties:
+        name:
+          type: string
+          description: Name of file
+          example: File
+        skills:
+          description: Skill of file
+          example: Skill
+          type: array
+          items:
+            type: string
+        company:
+          type: object
+          description: Company
+          example: *ref_4
+        location:
+          type: string
+          description: Location of file
+          example: Location
+        salary:
+          type: number
+          description: Salary of file
+          example: 1000
+        quantity:
+          type: number
+          description: Quantity of file
+          example: 100
+        level:
+          type: string
+          description: Level of file
+          example: Level
+        description:
+          type: string
+          description: Description of file
+          example: Description
+        startDate:
+          format: date-time
+          type: string
+          description: Start date of file
+          example: '2021-07-17T00:00:00.000Z'
+        endDate:
+          format: date-time
+          type: string
+          description: End date of file
+          example: '2021-07-17T00:00:00.000Z'
+        isActive:
+          type: boolean
+          description: Is active
+          example: true
